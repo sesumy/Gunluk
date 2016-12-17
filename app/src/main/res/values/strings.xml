@@ -1,0 +1,52 @@
+<resources>
+    Locale locale = new Locale("tr");
+    Locale.setDefault(locale);
+    <string name="app_name">Gunluk</string>
+    <string name="add_textbox_hint">Add a ToDo item</string>
+    <string name="add_button_text">Add</string>
+    <string name="service_title">Mobile Apps </string>
+    <string name="menu_refresh">Refresh</string>
+    <string name="checkbox_text">Item Text</string>
+
+    <string name="sesumy">Sesumy</string>
+    <string name="sumeyye_sevinc">Sümeyye SEVİNÇ</string>
+    <string name="degisecek">Değişecek</string>
+    <string name="drawer_opened">Open</string>
+    <string name="drawer_closed">Close</string>
+    <string name="nedir">Nedir?</string>
+    <string name="facebook_app_id">1841204752832498</string>
+    <string name="title_activity_sign_up">Sign Up</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_up">Sign up</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="kaydet">Kaydet</string>
+    <string name="mesaj">Mesaj</string>
+    <string name="giris_yap">Giriş Yap</string>
+    <string name="textview">TextView</string>
+
+
+    <string name="action_settings">Settings</string>
+    <string name="time_picker_example">Time Picker Example</string>
+    <string name="time_pick">Pick the time and press save button</string>
+    <string name="time_save">Save</string>
+    <string name="time_selected"></string>
+    <string name="time_current">The Time is:</string>
+    <string name="alarm">Hatırlatıcı Ekle</string>
+    <string name="stextview">TextView</string>
+    <string name="textview4">TextView</string>
+    <string name="cikis">Çıkış</string>
+    <string name="title_activity_logout">LogoutActivity</string>
+    <string name="logout_from_facebook">Logout from Facebook</string>
+    <string name="title_activity_diary_detail">DiaryDetail</string>
+
+
+</resources>

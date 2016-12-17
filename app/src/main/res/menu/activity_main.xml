@@ -1,0 +1,19 @@
+<menu xmlns:tools="http://schemas.android.com/tools"
+      xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_refresh"
+        android:orderInCategory="101"
+        android:showAsAction="always"
+        android:title="@string/menu_refresh"
+        tools:ignore="AppCompatResource">
+    </item>
+    <item android:id="@+id/start_action"
+          android:title="Start Action"
+          android:showAsAction="ifRoom|withText"/>
+
+    <item android:id="@+id/cancel_action"
+          android:showAsAction="ifRoom|withText"
+          android:title="Cancel Action" />
+
+</menu>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+    android:layout_height="91dp"
+    tools:ignore="UselessParent"
+    android:layout_width="wrap_content">
+
+        <TextView
+            android:text="Diary"
+            android:layout_width="wrap_content"
+            android:id="@+id/diary"
+            tools:ignore="HardcodedText,RtlHardcoded"
+            android:focusable="false"
+            android:ellipsize="end"
+            android:layout_gravity="top|left"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@+id/statusList"
+            android:textColor="@color/com_facebook_blue"
+            android:layout_marginLeft="10dp"
+            android:layout_alignTop="@+id/imageList"
+            android:layout_height="27dp"
+            />
+
+        <ImageView
+            tools:ignore="ContentDescription,ObsoleteLayoutParam,RtlHardcoded"
+            android:id="@+id/imageList"
+            android:background="@android:color/holo_blue_bright"
+            android:layout_weight="1"
+            android:layout_alignBottom="@+id/statusList"
+            android:layout_alignParentEnd="true"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="5dp"/>
+
+        <TextView
+            android:text="Mesaj Başlığı"
+            android:layout_width="wrap_content"
+            android:id="@+id/diaryTitle"
+            tools:ignore="HardcodedText,RelativeOverlap,RtlHardcoded,UnknownId"
+            android:focusable="false"
+
+            android:layout_above="@+id/diary"
+            android:ellipsize="end"
+            android:layout_gravity="top|left"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@+id/statusList"
+            android:textColor="@color/com_facebook_button_send_background_color"
+            android:textAllCaps="false"
+            android:layout_marginLeft="10dp"
+            android:textStyle="bold"
+            android:layout_height="15dp"
+            android:maxLines="1"/>
+
+        <TextView
+            android:text="Tarih"
+            android:layout_width="wrap_content"
+            android:id="@+id/time"
+            tools:ignore="HardcodedText,RelativeOverlap,RtlHardcoded,UnknownId"
+            android:layout_height="20dp"
+
+            android:focusable="false"
+            android:layout_above="@+id/diaryTitle"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@+id/statusList"
+            android:textColor="@android:color/holo_purple"
+            android:layout_marginLeft="5dp"
+            android:textStyle="bold|italic"
+            />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            tools:ignore="ContentDescription,ObsoleteLayoutParam,RtlHardcoded"
+            android:id="@+id/statusList"
+
+            android:focusable="false"
+            android:background="@android:color/holo_purple"
+            android:layout_weight="1"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"/>
+    </RelativeLayout>
+
+</LinearLayout>
