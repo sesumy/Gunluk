@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.gunluk.R;
-import com.example.gunluk.time.timeSet;
+import com.example.gunluk.activities.TimeSet;
 
 public class MySettings extends Fragment {
 
@@ -24,7 +24,7 @@ public class MySettings extends Fragment {
 		btn.setOnClickListener (new View.OnClickListener ( ) {
 			@Override
 			public void onClick(View view) {
-				Intent intent =new Intent(getContext (),timeSet.class);
+				Intent intent =new Intent(getContext (),TimeSet.class);
 				startActivity (intent);
 			}
 		});

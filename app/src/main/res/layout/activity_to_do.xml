@@ -1,35 +1,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-              android:background="@android:color/holo_red_light"
+              android:background="@android:color/holo_green_dark"
 
     >
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="39dp"
         android:layout_height="wrap_content"
         android:background="@android:color/holo_red_light"
         android:padding="6dip" >
-
-        <TextView
-            android:id="@+id/textViewTitle"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:layout_weight="0.12"
-            android:text="@string/service_title"
-            android:background="@android:color/holo_red_light"
-            tools:ignore="RtlHardcoded"/>
 
         <ProgressBar
             android:id="@+id/loadingProgressBar"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            style="@style/Widget.AppCompat.ProgressBar"
-            android:background="@color/com_facebook_likeview_text_color"/>
+            style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Inverse"
+            android:background="@color/cardview_shadow_end_color"/>
     </LinearLayout>
 
     <LinearLayout
@@ -44,91 +35,102 @@
             android:id="@+id/textNewToDo"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="#f8eff8f3"
-            android:hint="Mesaj Başlığı"
+            android:background="@drawable/activated"
+            android:hint="Günlük Başlığı Giriniz"
             android:padding="10dp"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:textColor="@color/com_facebook_button_background_color_pressed"
-            tools:ignore="HardcodedText">
+            tools:ignore="HardcodedText"
+            android:textColorHint="@color/cardview_shadow_start_color"
+            android:layout_weight="1.70"
+            android:layout_marginTop="15dp"
+            android:textStyle="normal|bold|italic">
 
             <requestFocus />
        </EditText>
 
         <Spinner
-             android:id="@+id/spinner"
-             android:drawSelectorOnTop="true"
-             android:background="@drawable/background"
-             android:layout_marginTop="10dp"
-             android:layout_width="match_parent"
-             android:layout_height="36dp"
-             android:layout_marginLeft="5dp"
-             android:layout_marginRight="5dp"
-             android:layout_weight="0.53"/>
+            android:id="@+id/spinner"
+            android:drawSelectorOnTop="true"
+            android:background="@color/cardview_shadow_start_color"
+            android:layout_marginTop="10dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            tools:ignore="InefficientWeight"
+            android:layout_width="match_parent"
+            android:popupBackground="@android:color/holo_purple"
+            tools:background="@color/cardview_shadow_end_color"/>
 
-         <RelativeLayout
+        <RelativeLayout
              android:layout_width="match_parent"
              android:layout_height="208dp"
-             android:background="#F33014"
+             android:background="@android:color/holo_red_light"
 
              >
 
-             <ImageView
-                 android:id="@+id/diaryImage"
-                 android:layout_alignParentRight="true"
-                 android:layout_alignParentEnd="true"
-                 android:layout_alignParentBottom="true"
-                 android:layout_width="100dp"
-                 android:layout_height="100dp"
-                 android:layout_marginRight="10dp"
-                 android:layout_marginBottom="10dp"
-                 android:alpha="0.7"
-                 tools:ignore="ContentDescription,RtlHardcoded"
-                 android:contentDescription=""/>
+            <EditText
+                android:id="@+id/diary"
+                android:layout_width="match_parent"
+                android:background="@drawable/activated"
+                android:gravity="top"
+                android:focusable="true"
+                android:hint="@string/mesaj"
+                android:padding="16dp"
+                android:layout_height="200dp"
+                tools:ignore="RtlHardcoded"
+                android:textColorHint="@color/cardview_shadow_start_color"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentTop="true"
+                android:textStyle="normal|bold|italic"/>
 
-             <EditText
-                 android:id="@+id/diary"
-                 android:layout_width="match_parent"
-                 android:background="#f8eff8f3"
-                 android:gravity="top"
-                 android:focusable="true"
-                 android:hint="@string/mesaj"
-                 android:padding="16dp"
-                 android:layout_height="200dp"
-                 android:textColor="@color/com_facebook_button_background_color_pressed"
-                 android:layout_alignParentBottom="true"
-                 android:layout_alignParentLeft="true"
-                 android:layout_alignParentStart="true"
-                 tools:ignore="RtlHardcoded"/>
-         </RelativeLayout>
+            <ImageView
+                android:id="@+id/diaryImage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:alpha="0.7"
+                tools:ignore="ContentDescription,RtlHardcoded"
+                android:contentDescription=""
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                app:srcCompat="@android:drawable/ic_menu_report_image"/>
+        </RelativeLayout>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/imageUpload"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="Resim Yükle"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        tools:ignore="HardcodedText"/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/buttonAddToDo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="@string/kaydet"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:onClick="addItem"/>
+        <Button
+            android:id="@+id/buttonAddToDo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="@string/kaydet"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:onClick="addItem"
+            android:layout_toEndOf="@+id/imageUpload"
+            android:background="@android:color/holo_red_light"/>
 
-    <TextView
-        android:text="@string/stextview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView"/>
+        <Button
+            android:id="@+id/imageUpload"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="Resim Yükle"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            tools:ignore="HardcodedText"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/buttonAddToDo"
+            android:layout_alignBottom="@+id/buttonAddToDo"
+            android:layout_width="175dp"
+            android:background="@android:color/holo_red_light"/>
+
+
+    </RelativeLayout>
+
 </LinearLayout>

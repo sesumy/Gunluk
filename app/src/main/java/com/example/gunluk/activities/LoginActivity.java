@@ -126,17 +126,14 @@ public class LoginActivity extends Activity {
                             startActivity(intent);
                             Toast.makeText(LoginActivity.this,"Hoşgeldin "+user.name,Toast.LENGTH_LONG).show();
                             finish();
-
                         }
 
                     });
-
             Bundle parameters = new Bundle();
             parameters.putString("fields", "id,name,email,gender");
             request.setParameters(parameters);
             request.executeAsync();
         }
-
         @Override
         public void onCancel() {
             progressDialog.dismiss();
@@ -155,9 +152,9 @@ public class LoginActivity extends Activity {
                 .setMessage("Yarın aynı saatte yine gel :) ")
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener () {
-
                     public void onClick(DialogInterface arg0, int arg1) {
-                        finish ();                    }
+                        finish ();
+                    }
                 }).create().show();
     }
 

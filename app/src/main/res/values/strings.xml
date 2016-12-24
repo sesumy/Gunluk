@@ -47,6 +47,7 @@
     <string name="title_activity_logout">LogoutActivity</string>
     <string name="logout_from_facebook">Logout from Facebook</string>
     <string name="title_activity_diary_detail">DiaryDetail</string>
+    <string name="diary">Diary</string>
 
 
 </resources>

@@ -42,6 +42,7 @@ public class LogoutActivity extends Activity {
                         e.printStackTrace();
                     }
                     try {
+                        assert imageURL != null;
                         bitmap  = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
 
                     } catch (IOException e) {

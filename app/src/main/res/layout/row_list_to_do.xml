@@ -29,7 +29,7 @@
         <ImageView
             tools:ignore="ContentDescription,ObsoleteLayoutParam,RtlHardcoded"
             android:id="@+id/imageList"
-            android:background="@android:color/holo_blue_bright"
+            android:background="@color/common_google_signin_btn_text_light_pressed"
             android:layout_weight="1"
             android:layout_alignBottom="@+id/statusList"
             android:layout_alignParentEnd="true"

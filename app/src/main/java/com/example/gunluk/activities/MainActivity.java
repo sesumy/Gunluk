@@ -24,10 +24,12 @@ import android.widget.TextView;
 
 import com.example.gunluk.R;
 import com.example.gunluk.adapters.NavListAdapter;
+import com.example.gunluk.adapters.ToDoItemAdapter;
 import com.example.gunluk.fragments.MyAbout;
 import com.example.gunluk.fragments.MyHome;
 import com.example.gunluk.fragments.MySettings;
 import com.example.gunluk.models.NavItem;
+import com.example.gunluk.models.ToDoItem;
 import com.example.gunluk.models.UserModel;
 import com.example.gunluk.utils.PrefUtils;
 
@@ -52,23 +54,20 @@ public class MainActivity extends AppCompatActivity {
     ImageView profileImage;
     String email;
     String name1;
-
-
+    private ToDoItemAdapter mAdapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
+        final UserModel user = PrefUtils.getCurrentUser (MainActivity.this);
         setContentView (R.layout.activity_diarise);
         tv=(TextView)findViewById(R.id.diarytab2);
-
         if(PrefUtils.getCurrentUser (MainActivity.this)==null){
             Intent intIntent=new Intent (this,LoginActivity.class);
             startActivity (intIntent);
         }
-        final UserModel user = PrefUtils.getCurrentUser (MainActivity.this);
          profileImage= (ImageView) findViewById(R.id.icon);
-
         // fetching facebook's profile picture
         new AsyncTask<Void,Void,Void> (){
             @Override
@@ -80,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 try {
+                    assert imageURL != null;
                     bitmap  = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
 
                 } catch (IOException e) {
@@ -152,9 +152,7 @@ public class MainActivity extends AppCompatActivity {
         };
         drawerLayout.setDrawerListener (actionBarDrawerToggle);
         //-----DRAWER LAYOUT AND ACTİON BAR END-------------------------------------------------------------
-
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater ( ).inflate (back, menu);
@@ -173,16 +171,41 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent (this, LogoutActivity.class);
                 this.startActivity (intent);
                 break;
+            case R.id.tableUpdate:
+
+                AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>(){
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        try {
+                            ToDoActivity a=new ToDoActivity ();
+                            final List<ToDoItem> results = a.refreshItemsFromMobileServiceTable();
+                            //Offline Sync
+                            //final List<ToDoItem> results = refreshItemsFromMobileServiceTableSyncTable();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mAdapter.clear();
+                                    for (ToDoItem item : results) {
+                                        mAdapter.add(item);
+                                    }
+                                }
+                            });
+                        } catch (final Exception e){
+                            createAndShowDialogFromTask(e, "Error");
+                        }
+                        return null;
+                    }
+                };
+
             default:
                 return super.onOptionsItemSelected (item);
         }
-
         return true;
     }
     @Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)
-                    .setTitle("Unutma")
+                    .setTitle("Hoşçakal")
                     .setMessage("Yarın aynı saatte yine gel :) ")
                     .setNegativeButton(android.R.string.no, null)
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener () {
@@ -192,5 +215,17 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }).create().show();
         }
-
+    private void createAndShowDialogFromTask(final Exception exception, String title) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                createAndShowDialog(exception, "Error");
+            }
+        });
     }
+    private void createAndShowDialog(Exception exception, String title) {
+        createAndShowDialog(exception, title);
+    }
+
+
+}

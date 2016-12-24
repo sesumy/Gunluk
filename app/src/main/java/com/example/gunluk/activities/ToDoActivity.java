@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,7 +31,6 @@ import com.example.gunluk.R;
 import com.example.gunluk.adapters.ToDoItemAdapter;
 import com.example.gunluk.models.ToDoItem;
 import com.example.gunluk.models.UserModel;
-import com.example.gunluk.time.timeSet;
 import com.example.gunluk.utils.PrefUtils;
 import com.example.gunluk.utils.Utilities;
 import com.google.common.util.concurrent.FutureCallback;
@@ -76,6 +77,8 @@ public class ToDoActivity extends Activity {
     private Spinner mSpinner;
     private String userId;
     final UserModel user = PrefUtils.getCurrentUser (ToDoActivity.this);
+final String diaTit="Günlük Başlığı Yok";
+    final String diaInf="Günlük İçeriği Yok";
 
 
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
@@ -219,10 +222,10 @@ public class ToDoActivity extends Activity {
     private void onCaptureImageResult(Intent data) {
         Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+        thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
 
         File destination = new File(Environment.getExternalStorageDirectory(),
-                System.currentTimeMillis() + ".jpg");
+                System.currentTimeMillis() + ".jpeg");
 
         FileOutputStream fo;
         try {
@@ -256,7 +259,7 @@ public class ToDoActivity extends Activity {
     }
     public Bitmap Decrease_resolution(Bitmap photo) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream ( );
-        photo.compress (Bitmap.CompressFormat.PNG, 5, stream);
+        photo.compress (Bitmap.CompressFormat.JPEG, 100, stream);
         byte[] byteArray = stream.toByteArray ( );
         return BitmapFactory.decodeByteArray (byteArray, 0, byteArray.length);
     }
@@ -273,7 +276,7 @@ public class ToDoActivity extends Activity {
             refreshItemsFromTable();
         }
         if (item.getItemId() == R.id.timeset) {
-            Intent intent=new Intent (ToDoActivity.this, timeSet.class);
+            Intent intent=new Intent (ToDoActivity.this, TimeSet.class);
             startActivity (intent);
         }
 
@@ -293,17 +296,35 @@ public class ToDoActivity extends Activity {
         // Create a new item
         final ToDoItem item = new ToDoItem();
 
-        item.setText(mTextNewToDo.getText().toString());
+            if(mTextNewToDo.getText()!=null){
+                item.setText(mTextNewToDo.getText().toString());
+            }
+        else{
+                item.setText(diaTit);
+            }
+
+        if(mDiary.getText ()!=null){
+            item.setDiary (mDiary.getText ().toString ());
+        }
+        else{
+            item.setDiary (diaInf);
+        }
         item.setState (mSpinner.getSelectedItem ().toString ());
-        item.setDiary (mDiary.getText ().toString ());
         item.setUserId (userId);
         item.setComplete(false);
+
         if(mDiaryImage.getDrawable ()!= null) {
             mDiaryImage.buildDrawingCache();
             Bitmap bmap = mDiaryImage.getDrawingCache();
             item.setDiaryImage (bitmapToBase64 (bmap));
             String a= bitmapToBase64 (bmap);
             Log.e (a,toString ());
+        }
+        else{
+
+            Drawable myDrawable = getResources().getDrawable(R.drawable.noimage);
+            Bitmap noImage = ((BitmapDrawable) myDrawable).getBitmap();
+            item.setDiaryImage (bitmapToBase64 (noImage));
         }
         // Insert the new item
         AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>(){
@@ -327,9 +348,8 @@ public class ToDoActivity extends Activity {
         };
 
         runAsyncTask(task);
-
-        mTextNewToDo.setText("");
-        mDiary.setText ("");
+        //Intent intent=new Intent (this,MainActivity.class);
+       // startActivity (intent);
     }
     /**
      * Add an item to the Mobile Service Table
@@ -415,7 +435,7 @@ public class ToDoActivity extends Activity {
     }
     /**
      * Refresh the list with the items in the Mobile Service Table
-     */private List<ToDoItem> refreshItemsFromMobileServiceTable() throws ExecutionException, InterruptedException {
+     */public List<ToDoItem> refreshItemsFromMobileServiceTable() throws ExecutionException, InterruptedException {
         return mToDoTable.where().field("userId").eq(val(user.facebookID)).execute().get() ;
                  //mToDoTable.where().field("complete").eq(val(false)).execute().get();
     }//İD SINIRLAMASINI BURAYA YAZ
@@ -462,6 +482,7 @@ public class ToDoActivity extends Activity {
         };
 
         return runAsyncTask(task);
+
     }
     //Offline Sync
     /**
@@ -552,10 +573,12 @@ public class ToDoActivity extends Activity {
                         @Override
                         public void run() {
                             if (mProgressBar != null) mProgressBar.setVisibility(ProgressBar.GONE);
+
                         }
                     });
 
                     resultFuture.set(response);
+
                 }
             });
 
@@ -593,7 +616,7 @@ public class ToDoActivity extends Activity {
     */
     private String bitmapToBase64(Bitmap bitmap) {           // RESMİ ŞİFRELEME
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream .toByteArray();
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }

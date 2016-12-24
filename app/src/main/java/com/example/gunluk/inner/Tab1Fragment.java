@@ -2,16 +2,17 @@ package com.example.gunluk.inner;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -34,15 +35,15 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import static com.microsoft.windowsazure.mobileservices.table.query.QueryOperations.val;
+import static java.lang.System.out;
 
 public class Tab1Fragment extends Fragment {
     private MobileServiceClient mClient;
     private MobileServiceTable<ToDoItem> mToDoTable;
     private ToDoItemAdapter mAdapter;
-    private EditText mTextNewToDo;
     String userId;
+    int pos;
     final UserModel user = PrefUtils.getCurrentUser (getContext ());
-
     public Tab1Fragment() {
     }
     @Override
@@ -57,7 +58,6 @@ public class Tab1Fragment extends Fragment {
         add.setOnClickListener (new View.OnClickListener ( ) {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent (getActivity ( ), ToDoActivity.class);
                 startActivity (intent);
             }
@@ -65,11 +65,9 @@ public class Tab1Fragment extends Fragment {
         });
         try {
             // Create the Mobile Service Client instance, using the provided
-
             // Mobile Service URL and key
             mClient = new MobileServiceClient (
                     "https://gunluk.azurewebsites.net",getActivity ());
-
             // Extend timeout from default of 10s to 20s
             mClient.setAndroidHttpClientFactory(new OkHttpClientFactory () {
                 @Override
@@ -80,15 +78,11 @@ public class Tab1Fragment extends Fragment {
                     return client;
                 }
             });
-
             // Get the Mobile Service Table instance to use
-
             mToDoTable = mClient.getTable(ToDoItem.class);
-
             // Offline Sync
             //mToDoTable = mClient.getSyncTable("ToDoItem", ToDoItem.class);
             //Init local storage
-            mTextNewToDo = (EditText)getActivity ().findViewById(R.id.textNewToDo);
             // Create an adapter to bind the items with the view
             mAdapter = new ToDoItemAdapter (getActivity (), R.layout.row_list_to_do);
             final ListView listViewToDo = (ListView)getActivity ().findViewById(R.id.listViewToDo);
@@ -96,24 +90,35 @@ public class Tab1Fragment extends Fragment {
             listViewToDo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                           public void onItemClick (AdapterView<?> parent, View view, int position, long id) {
                                               Intent intent = new Intent(getActivity(), DiaryDetail.class);
-                                              Object listItem = listViewToDo.getItemAtPosition(position);
-                                              Log.i ("fsdf" , (String) listItem);
-                                              Log.i ("", String.valueOf (view.getId ()));
-                                              Log.i ("",String.valueOf (position));
-                                              Log.i ("",String.valueOf (id));
-                                              startActivityForResult(intent, parent.getSelectedItemPosition ());
+                                              ToDoItem item =  mAdapter.getItem(position);
+                                              pos=position;
+                                              assert item != null;
+                                              out.println("Diary: "+item.getDiary ());
+                                              out.println("DiarytTitle: "+item.getText ());
+                                              out.println("DiaryDate: "+item.getCreatedAt ());
+                                              out.println("ItemId: "+item.getId ());
 
-                                          }
-                                      });
-
-            // Load the items from the Mobile Service
+                                              intent.putExtra ("diary",item.getDiary ());
+                                              intent.putExtra ("diaryTitle",item.getText ());
+                                              intent.putExtra ("diaryDate",item.getCreatedAt ().toString ());
+                                              intent.putExtra ("itemId", item.getId ());
+                                              intent.putExtra ("diaryImage",item.getDiaryImage ());
+                                              intent.putExtra ("position", position);
+                                              startActivityForResult(intent,position);
+                                          }});
             refreshItemsFromTable();
-
         } catch (MalformedURLException e) {
             createAndShowDialog(new Exception("There was an error creating the Mobile Service. Verify the URL"), "Error");
         } catch (Exception e){
             createAndShowDialog(e, "Error");
         }
+    }
+    private Bitmap base64ToBitmap(String b64) { //ŞİFRELİ METNİ RESME DÖNÜŞTÜRME
+        byte[] imageAsBytes = Base64.decode(b64.getBytes(), Base64.DEFAULT);
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = false;
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length,options);
     }
     /**
      * Mark an item as completed
@@ -173,10 +178,8 @@ public class Tab1Fragment extends Fragment {
         AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>(){
             @Override
             protected Void doInBackground(Void... params) {
-
                 try {
                     final List<ToDoItem> results = refreshItemsFromMobileServiceTable();
-
                     //Offline Sync
                     //final List<ToDoItem> results = refreshItemsFromMobileServiceTableSyncTable();
                     getActivity ().runOnUiThread(new Runnable() {
@@ -203,9 +206,7 @@ public class Tab1Fragment extends Fragment {
      */
     private List<ToDoItem> refreshItemsFromMobileServiceTable() throws ExecutionException, InterruptedException {
             //List list = mToDoTable.where ( ).field ("complete").eq(val(false)).execute().get();
-        return mToDoTable.where ( ).field ("userId").eq (val (userId)).execute().get();
-
-        //-------------------------------------------BAK-------------------------------------------------------------------------------
+        return mToDoTable.where ().field ("userId").eq (val (userId)).and(mToDoTable.where ( ).field ("complete").eq(val(false))).execute().get();
     }
 
     //Offline Sync

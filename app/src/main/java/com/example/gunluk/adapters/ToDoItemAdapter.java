@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +43,7 @@ public class ToDoItemAdapter extends ArrayAdapter<ToDoItem> {
      * Returns the view for a specific item on the list
      */
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         View row = convertView;
 
         final ToDoItem currentItem = getItem (position);
@@ -59,6 +60,7 @@ public class ToDoItemAdapter extends ArrayAdapter<ToDoItem> {
      //   checkBox.setChecked (false);
      //   checkBox.setEnabled (true);
         final TextView time = (TextView) row.findViewById (R.id.time);
+        assert currentItem != null;
         time.setText (currentItem.getCreatedAt ( ).toString ( ));
         final ImageView imageList = (ImageView) row.findViewById (R.id.imageList);
         String image = currentItem.getDiaryImage ( );
@@ -101,7 +103,9 @@ public class ToDoItemAdapter extends ArrayAdapter<ToDoItem> {
     }
     private Bitmap base64ToBitmap(String b64) { //ŞİFRELİ METNİ RESME DÖNÜŞTÜRME
         byte[] imageAsBytes = Base64.decode(b64.getBytes(), Base64.DEFAULT);
-         Bitmap bitmap =BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
-        return bitmap;
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = false;
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length,options);
     }
 }

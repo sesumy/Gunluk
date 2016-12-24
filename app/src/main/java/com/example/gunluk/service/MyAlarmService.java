@@ -26,7 +26,7 @@ public class MyAlarmService extends Service implements TextToSpeech.OnInitListen
             mTts = new TextToSpeech(this, this);
             mTts.setSpeechRate(0.5f);
             Log.v(TAG, "oncreate_service");
-            str ="Hi Ebrar How Are You ? My friend is name Nazlıcan Çetin  ";
+            str ="Hi There I'm using Diary";
             super.onCreate();
         }
         @Override
